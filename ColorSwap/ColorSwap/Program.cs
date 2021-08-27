@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace ColorSwap
@@ -28,6 +29,7 @@ namespace ColorSwap
             List<string> colors = CreateColorArray(photosNeeded * originalColors.Count);
             Console.WriteLine("Creating OUTPUT folder ..");
 
+            string fileName = Path.GetFileName(imagePath).Split('.').First();
             System.IO.Directory.CreateDirectory(@".\output");
 
             for (int i = 1; i <= photosNeeded; i++)
@@ -38,8 +40,8 @@ namespace ColorSwap
                     newPhoto = ChangeColor(newPhoto, oldColor, colors[0]);
                     colors.RemoveAt(0);
                 }
-                Console.WriteLine($"Saving photo number { i } ..");
-                newPhoto.Save($@".\output\img{ i }.png", System.Drawing.Imaging.ImageFormat.Png);
+                Console.WriteLine($"Saving photo  { fileName }{ i } ..");
+                newPhoto.Save($@".\output\{ fileName }{ i }.png", System.Drawing.Imaging.ImageFormat.Png);
             }
 
             Console.WriteLine("*******************************");
