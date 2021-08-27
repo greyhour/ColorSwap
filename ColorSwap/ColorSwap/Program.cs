@@ -19,7 +19,7 @@ namespace ColorSwap
             Console.WriteLine("Please drag the photo into the cmd and press [ENTER] ..");
             imagePath = Console.ReadLine();
             Console.WriteLine("Please enter the colors to change (e.g. #00000;#000001) and press [ENTER] ..");
-            originalColors = Console.ReadLine().Split(";").ToList();
+            originalColors = Console.ReadLine().Split(';').ToList();
             Console.WriteLine("Please enter the number of photos to be created and press [ENTER] ..");
             photosNeeded = Convert.ToInt32(Console.ReadLine());
 
@@ -27,21 +27,19 @@ namespace ColorSwap
             Console.WriteLine("Creating a list of random colors ...");
             List<string> colors = CreateColorArray(photosNeeded * originalColors.Count);
             Console.WriteLine("Creating OUTPUT folder ..");
-            
+
             System.IO.Directory.CreateDirectory(@".\output");
 
-            Bitmap bmp = new Bitmap(Image.FromFile(imagePath));
             for (int i = 1; i <= photosNeeded; i++)
             {
-                Bitmap newPhoto = bmp;
+                Bitmap newPhoto = new Bitmap(Image.FromFile(imagePath)); ;
                 foreach (string oldColor in originalColors)
                 {
                     newPhoto = ChangeColor(newPhoto, oldColor, colors[0]);
-                    if (colors.Count >= 1)
-                        colors.RemoveAt(0);
+                    colors.RemoveAt(0);
                 }
                 Console.WriteLine($"Saving photo number { i } ..");
-                bmp.Save(@$".\output\img{ i }.png", System.Drawing.Imaging.ImageFormat.Png);
+                newPhoto.Save($@".\output\img{ i }.png", System.Drawing.Imaging.ImageFormat.Png);
             }
 
             Console.WriteLine("*******************************");
@@ -56,7 +54,7 @@ namespace ColorSwap
             do
             {
                 Random r = new Random();
-                string newColor = r.Next(0, 1000000).ToString("000000");
+                string newColor = $"#{ r.Next(0, 1000000).ToString("000000") }";
                 if (!colors.Contains(newColor))
                     colors.Add(newColor);
             } while (colors.Count < colorCount);
